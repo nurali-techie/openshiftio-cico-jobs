@@ -119,24 +119,33 @@
             branches:
                 - '${{ghprbActualCommit}}'
 
-- wrapper:
-    name: npm-build-deliver-creds
+- vault_defaults: &vault_defaults
+    name: 'vault_defaults'
     wrappers:
-        - credentials-binding:
-            - text:
-                credential-id: ca93a149-7f35-4be4-b1bf-c6cb2ed83c34
-                variable: GH_TOKEN
-            - text:
-                credential-id: dea94aec-467e-4363-9578-3a3a2d0009e6
-                variable: NPM_TOKEN
+      - vault-secrets:
+          vault-url: 'http://zabbix.devshift.net:8200'
+          credentials-id: '52ce5cda-e8f3-47a7-917b-8771518b4729'
 
-- wrapper:
-    name: fabric8-planner-test-token
-    wrappers:
-      - credentials-binding:
-        - text:
-            credential-id: 270c316a-5343-4b61-9d1f-e506038c08cd
-            variable: REFRESH_TOKEN
+- fabric8-planner-test-token: &fabric8-planner-test-token
+    name: "fabric8-planner-test-token"
+    secret-path: 'devtools/fabric8-planner-test-token-refresh-token'
+    secret-values:
+      - env-var: 'REFRESH_TOKEN'
+        vault-key: 'token'
+
+- npm-build-deliver-creds-gh-token: &npm-build-deliver-creds-gh-token
+    name: "npm-build-deliver-creds-gh-token"
+    secret-path: 'devtools/npm-build-deliver-creds-gh-token'
+    secret-values:
+      - env-var: 'GH_TOKEN'
+        vault-key: 'token'
+
+- npm-build-deliver-creds-npm-token: &npm-build-deliver-creds-npm-token
+    name: "npm-build-deliver-creds-npm-token"
+    secret-path: 'devtools/npm-build-deliver-creds-npm-token'
+    secret-values:
+      - env-var: 'NPM_TOKEN'
+        vault-key: 'token'
 
 - wrapper:
     name: che_credentials_wrapper
@@ -406,10 +415,11 @@
     registry: 'MISSING_REGISTRY_NAME'
     image_name: 'MISSING_IMAGE_NAME'
     wrappers:
+      - vault-secrets:
+          <<: *vault_defaults
+          secrets:
+            - *fabric8-planner-test-token
       - credentials-binding:
-        - text:
-            credential-id: 270c316a-5343-4b61-9d1f-e506038c08cd
-            variable: REFRESH_TOKEN
         - username-password-separated:
             credential-id: 17c4ae0f-80d2-4cce-be76-8fd67c83d97f
             username: USERNAME
@@ -1320,10 +1330,14 @@
       If all goes well, npm is published
     node: "{ci_project}"
     wrappers:
-            - npm-build-deliver-creds
-            - fabric8-planner-test-token
-            - registry_devshift_credentials
-            - quay_credentials
+        - vault-secrets:
+            <<: *vault_defaults
+            secrets:
+              - *npm-build-deliver-creds-gh-token
+              - *npm-build-deliver-creds-npm-token
+              - *fabric8-planner-test-token
+        - registry_devshift_credentials
+        - quay_credentials
     properties:
         - github:
             url: https://github.com/{git_organization}/{git_repo}/
