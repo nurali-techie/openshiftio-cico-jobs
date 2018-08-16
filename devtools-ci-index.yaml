@@ -1940,7 +1940,7 @@
             if [[ $rtn_code -eq 124 ]]; then
                echo "BUILD TIMEOUT";
             else
-               rsync -delete -PHva -e "ssh $sshopts" $CICO_hostname:payload/ $(pwd) || rtn_code=$?
+               rsync -delete -qPHva -e "ssh $sshopts" $CICO_hostname:payload/ $(pwd) || rtn_code=$?
             fi
             cico node done $CICO_ssid
             exit $rtn_code
@@ -3125,7 +3125,7 @@
             forge_api: https://forge.api.openshift.io
             wit_api: https://api.openshift.io
             auth_api: https://auth.openshift.io
-            danger_zone: '@osio.danger-zone'
+            danger_zone: true
             pipeline: maven-releasestageapproveandpromote
             booster_mission: rest-http
             booster_runtime: vert.x
