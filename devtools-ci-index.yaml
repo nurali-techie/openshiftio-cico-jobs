@@ -122,10 +122,8 @@
 
 - vault_defaults: &vault_defaults
     name: 'vault_defaults'
-    wrappers:
-      - vault-secrets:
-          vault-url: 'http://zabbix.devshift.net:8200'
-          credentials-id: '52ce5cda-e8f3-47a7-917b-8771518b4729'
+    vault-url: 'http://zabbix.devshift.net:8200'
+    credentials-id: '52ce5cda-e8f3-47a7-917b-8771518b4729'
 
 - fabric8-planner-test-token: &fabric8-planner-test-token
     name: "fabric8-planner-test-token"
