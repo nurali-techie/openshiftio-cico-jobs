@@ -122,33 +122,33 @@
 
 - vault_defaults: &vault_defaults
     name: 'vault_defaults'
-    vault-url: 'http://zabbix.devshift.net:8200'
+    vault-url: 'https://vault.devshift.net'
     credentials-id: '52ce5cda-e8f3-47a7-917b-8771518b4729'
 
 - fabric8-planner-test-token: &fabric8-planner-test-token
     name: "fabric8-planner-test-token"
-    secret-path: 'devtools/fabric8-planner-test-token-refresh-token'
+    secret-path: 'devtools-cico/fabric8-planner-test-token-refresh-token'
     secret-values:
       - env-var: 'REFRESH_TOKEN'
         vault-key: 'token'
 
 - npm-build-deliver-creds-gh-token: &npm-build-deliver-creds-gh-token
     name: "npm-build-deliver-creds-gh-token"
-    secret-path: 'devtools/npm-build-deliver-creds-gh-token'
+    secret-path: 'devtools-cico/npm-build-deliver-creds-gh-token'
     secret-values:
       - env-var: 'GH_TOKEN'
         vault-key: 'token'
 
 - npm-build-deliver-creds-npm-token: &npm-build-deliver-creds-npm-token
     name: "npm-build-deliver-creds-npm-token"
-    secret-path: 'devtools/npm-build-deliver-creds-npm-token'
+    secret-path: 'devtools-cico/npm-build-deliver-creds-npm-token'
     secret-values:
       - env-var: 'NPM_TOKEN'
         vault-key: 'token'
 
 - registry-devshift-credentials: &registry-devshift-credentials
     name: "registry-devshift-credentials"
-    secret-path: 'devtools/registry-devshift-credentials'
+    secret-path: 'devtools-cico/registry-devshift-credentials'
     secret-values:
       - env-var: 'DEVSHIFT_USERNAME'
         vault-key: 'devshift_username'
@@ -157,7 +157,7 @@
 
 - quay-credentials: &quay-credentials
     name: "quay-credentials"
-    secret-path: 'devtools/quay-credentials'
+    secret-path: 'devtools-cico/quay-credentials'
     secret-values:
       - env-var: 'QUAY_USERNAME'
         vault-key: 'quay_username'
